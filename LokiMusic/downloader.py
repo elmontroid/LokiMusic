@@ -95,7 +95,7 @@ def download(url : str, format : str | list[str], logger : logging = logger) -> 
     logger.warn('Audio download completed')
 
     logger.debug('Generating metadata')
-    videoMetadata = metadata(video.video_id, stream.default_filename.encode('latin-1', 'replace').decode('latin-1', 'ignore'), os.path.splitext(filePath)[1][1:], filePath)
+    videoMetadata = metadata(video.video_id, os.path.splitext(stream.default_filename)[0].encode('latin-1', 'replace').decode('latin-1', 'ignore'), os.path.splitext(filePath)[1][1:], filePath)
     logger.debug('Generated metadata')
 
     logger.debug('Updating cache')
