@@ -1,4 +1,5 @@
 import sys
+import pathlib
 import colorama
 from os import path
 from http.server import HTTPServer
@@ -11,9 +12,11 @@ from packages.configParser import configurationReader
 colors = colorama.Fore
 
 fileDelimiter = path.sep
+currentPath = pathlib.Path(__file__).parent.resolve()
+
 logger = logging(LogLevel.info)
 network.logger = logger
-configurationManager = configurationReader(f'.{fileDelimiter}configuration.ini')
+configurationManager = configurationReader(f'{currentPath}{fileDelimiter}configuration.ini')
 
 if sys.argv.__contains__('--host'):
 

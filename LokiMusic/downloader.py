@@ -1,5 +1,6 @@
 import os
 import json
+import pathlib
 from pytube import YouTube
 from dataclasses import dataclass
 
@@ -7,8 +8,9 @@ from packages.Logger import logging, LogLevel
 from packages.configParser import configurationReader
 
 fileDelimiter = os.path.sep 
+currentPath = pathlib.Path(__file__).parent.resolve()
 logger = logging(LogLevel.debug)
-configurationManager = configurationReader(f'.{fileDelimiter}configuration.ini')
+configurationManager = configurationReader(f'{currentPath}{fileDelimiter}configuration.ini')
 
 @dataclass
 class metadata:
@@ -25,7 +27,7 @@ class AudioNotFound(Exception):
 
 
 def resolveCache(id : str) -> metadata | None:
-    with open(f'.{fileDelimiter}data{fileDelimiter}cache.json', 'r', encoding='utf-8') as file:
+    with open(f'{currentPath}{fileDelimiter}data{fileDelimiter}cache.json', 'r', encoding='utf-8') as file:
         jsonContent = json.load(file)
 
         if jsonContent['data'].__contains__(id):
@@ -35,7 +37,7 @@ def resolveCache(id : str) -> metadata | None:
             return cacheMetadata
 
 def updateCache(metadataContent : metadata) -> None:
-    with open(f'.{fileDelimiter}data{fileDelimiter}cache.json', 'r+', encoding='utf-8') as file:
+    with open(f'{currentPath}{fileDelimiter}data{fileDelimiter}cache.json', 'r+', encoding='utf-8') as file:
         jsonContent = json.load(file)
 
         if jsonContent['data'].__contains__(metadataContent.id): raise KeyError(f'Cache with id[`{metadataContent.id}`] already exist')
@@ -91,7 +93,7 @@ def download(url : str, format : str | list[str], logger : logging = logger) -> 
 
     logger.debug(f'size(MB): {stream.filesize_mb}, file name: {stream.default_filename}')
     logger.warn('Starting audio download')
-    filePath = stream.download(f'.{fileDelimiter}audios', timeout=timeoutsec)
+    filePath = stream.download(f'{currentPath}{fileDelimiter}audios', timeout=timeoutsec)
     logger.warn('Audio download completed')
 
     logger.debug('Generating metadata')

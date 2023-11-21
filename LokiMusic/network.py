@@ -1,3 +1,4 @@
+import pathlib
 from os import path
 from pytube import exceptions
 from functools import cached_property
@@ -9,8 +10,9 @@ from packages.Logger import logging, LogLevel
 from packages.configParser import configurationReader
 
 fileDelimiter = path.sep
+currentPath = pathlib.Path(__file__).parent.resolve()
 logger = logging(LogLevel.debug)
-configurationManager = configurationReader(f'.{fileDelimiter}configuration.ini')
+configurationManager = configurationReader(f'{currentPath}{fileDelimiter}configuration.ini')
 
 
 class handler(BaseHTTPRequestHandler):
@@ -41,7 +43,7 @@ class handler(BaseHTTPRequestHandler):
         if self.url.path == '/':
             logger.log(f'New request for `index.html` from client at {self.client_address[0]}')
             logger.debug('Opening `index.html` from `data` directory')
-            with open(f'.{fileDelimiter}data{fileDelimiter}index.html', 'r', encoding='utf-8') as file:
+            with open(f'{currentPath}{fileDelimiter}data{fileDelimiter}index.html', 'r', encoding='utf-8') as file:
                 logger.debug('Reading `index.html` file')
                 page = file.read()
                 logger.debug('Sending HTTP status code to client[200]')
