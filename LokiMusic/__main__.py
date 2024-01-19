@@ -45,5 +45,5 @@ except KeyboardInterrupt:
     logger.warn('Server shutting down because user interrupted server task', fileLog=False, force=True)
 
 except BaseException as error:
-    logger.error('Unexpected server shutdown because an internal critical error has occurred with the following error message', fileLog=False, force=True)
-    logger.error('Error: {error}', fileLog=False, force=True)
+    logger.error('Unexpected server shutdown because an internal critical error has occurred with the following error message', fileLog=True, force=True)
+    logger.error(f'Error: {error}', fileLog=True, force=True)
